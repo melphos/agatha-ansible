@@ -16,8 +16,11 @@ agatha_db_name: agatha
 agatha_db_schema: agatha
 agatha_db_password: agatha
 agatha_db_user: agatha
+agatha_db_volume: /opt/agatha/db
 
 agatha_svc_uri: agatha.dominio.br
 agatha_svc_db_host: agathadb
+agatha_svc_volume_config: /opt/agatha/config
+agatha_svc_volume_clogs: /opt/agatha/logs
 
 agatha_api_uri: agatha-service:8080

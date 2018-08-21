@@ -1,0 +1,25 @@
+[agatha]
+host-agatha ansible_connection=local 
+
+[agatha:vars]
+docker_edition='ce'
+
+docker_service_state=started
+docker_service_enabled=yes
+docker_restart_handler_state=restarted
+
+docker_yum_repo_url=https://download.docker.com/linux/centos/docker-{{ docker_edition }}.repo
+
+agatha_db_name=agatha
+agatha_db_schema=agatha
+agatha_db_password=agatha
+agatha_db_user=agatha
+agatha_db_volume=/opt/agatha/db
+
+agatha_svc_uri=agatha.dominio.br
+agatha_svc_db_host=agathadb
+agatha_svc_volume_config=/opt/agatha/config
+agatha_svc_volume_clogs=/opt/agatha/logs
+
+agatha_api_uri=agatha-service:8080
+
