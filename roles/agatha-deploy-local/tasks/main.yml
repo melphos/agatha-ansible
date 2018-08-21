@@ -1,0 +1,44 @@
+- name: Gestao Riscos DB
+  docker:
+    name: gestaoriscos-db
+    image: santiago07/gestaoriscos-db
+    state: started
+    expose:
+    - 5432
+    volumes:
+    - /opt/agatha/db:/var/lib/postgresql/data  
+    env:
+      DB_NAME: {{ agatha_db_name }}
+      DB_SCHEMA: {{ agatha_db_schema }}
+      POSTGRES_PASSWORD: {{ agatha_db_password }}
+      POSTGRES_USER: {{ agatha_db_user }}
+
+- name: Gestao Riscos Service
+  docker:
+    name: gestaoriscos-service
+    image: santiago07/gestaoriscos-db
+    state: started
+    links:
+    - "gestaoriscos-db:agathadb"
+    volumes:
+    - /opt/agatha/config:/config:ro
+    - /opt/agatha/logs:/logs:rw
+    env:
+      AGATHA_URI: {{ agatha_svc_uri }}
+      DB_HOST: {{ agatha_svc_db_host }}
+      DB_NAME: {{ agatha_db_name }}
+      DB_SCHEMA: {{ agatha_db_schema }}
+      DB_USERNAME: {{ agatha_db_user }}
+      DB_PASSWORD: {{ agatha_db_password }}
+
+- name: Gestao Riscos Frontend
+  docker:
+    name: gestaoriscos-frontend
+    image: santiago07/gestaoriscos-frontend
+    state: started
+    links:
+    - "gestaoriscos-service:agatha-service"
+    env:
+      ENDERECO_API: {{ agatha_api_uri }}
+    ports:
+    - "80:80"
