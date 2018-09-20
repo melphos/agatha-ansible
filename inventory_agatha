@@ -1,8 +1,12 @@
 [agatha]
-host-agatha ansible_connection=local 
+pvl134 ansible_connection=local 
 
 [agatha:vars]
 docker_edition='ce'
+
+docker_package="docker-{{ docker_edition }}"
+docker_package_state=present
+
 
 docker_service_state=started
 docker_service_enabled=yes
@@ -10,16 +14,20 @@ docker_restart_handler_state=restarted
 
 docker_yum_repo_url=https://download.docker.com/linux/centos/docker-{{ docker_edition }}.repo
 
-agatha_db_name=agatha
-agatha_db_schema=agatha
+agatha_db_name=gestaoriscos
+agatha_db_schema=gestaoriscos
 agatha_db_password=agatha
 agatha_db_user=agatha
 agatha_db_volume=/opt/agatha/db
 
-agatha_svc_uri=agatha.dominio.br
+agatha_svc_uri=agatha.mctic.gov.br
 agatha_svc_db_host=agathadb
 agatha_svc_volume_config=/opt/agatha/config
 agatha_svc_volume_clogs=/opt/agatha/logs
+agatha_svc_client_id="ea836858-c523-4b7c-85b8-89146104d076"
+agatha_svc_client_secret="APjQpSceidhAwCbkFiSDOh0aejlpBi5E19xyY0Y9Z9hKBWSwhfOHB-Bpn2rwBPUeQaJz2a-Rb19AOM8X_qx5mrQ"
+agatha_svc_config_appliction_yaml=/opt/agatha/config/application.yaml
+agatha_svc_config_application_properties=/opt/agatha/config/application.properties
 
 agatha_api_uri=agatha-service:8080
 

@@ -1,5 +1,19 @@
+- template:
+    src: template/application.yaml.j2
+    dest: "{{ agatha_svc_config_appliction_yaml }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- template:
+    src: template/application.properties.j2
+    dest: "{{ agatha_svc_config_application_properties }}"
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Gestao Riscos DB
-  docker:
+  docker_container:
     name: gestaoriscos-db
     image: santiago07/gestaoriscos-db
     state: started
@@ -8,15 +22,15 @@
     volumes:
     - /opt/agatha/db:/var/lib/postgresql/data  
     env:
-      DB_NAME: {{ agatha_db_name }}
-      DB_SCHEMA: {{ agatha_db_schema }}
-      POSTGRES_PASSWORD: {{ agatha_db_password }}
-      POSTGRES_USER: {{ agatha_db_user }}
+      DB_NAME: "{{ agatha_db_name }}"
+      DB_SCHEMA: "{{ agatha_db_schema }}"
+      POSTGRES_PASSWORD: "{{ agatha_db_password }}"
+      POSTGRES_USER: "{{ agatha_db_user }}"
 
 - name: Gestao Riscos Service
-  docker:
+  docker_container:
     name: gestaoriscos-service
-    image: santiago07/gestaoriscos-db
+    image: santiago07/gestaoriscos-service
     state: started
     links:
     - "gestaoriscos-db:agathadb"
@@ -24,21 +38,24 @@
     - /opt/agatha/config:/config:ro
     - /opt/agatha/logs:/logs:rw
     env:
-      AGATHA_URI: {{ agatha_svc_uri }}
-      DB_HOST: {{ agatha_svc_db_host }}
-      DB_NAME: {{ agatha_db_name }}
-      DB_SCHEMA: {{ agatha_db_schema }}
-      DB_USERNAME: {{ agatha_db_user }}
-      DB_PASSWORD: {{ agatha_db_password }}
+      AGATHA_URI: "{{ agatha_svc_uri }}"
+      DB_HOST: "{{ agatha_svc_db_host }}"
+      DB_NAME: "{{ agatha_db_name }}"
+      DB_SCHEMA: "{{ agatha_db_schema }}"
+      DB_USERNAME: "{{ agatha_db_user }}"
+      DB_PASSWORD: "{{ agatha_db_password }}"
+
+- name: Wait 30 seconds 
+  wait_for: timeout=30
 
 - name: Gestao Riscos Frontend
-  docker:
+  docker_container:
     name: gestaoriscos-frontend
     image: santiago07/gestaoriscos-frontend
     state: started
     links:
     - "gestaoriscos-service:agatha-service"
     env:
-      ENDERECO_API: {{ agatha_api_uri }}
+      ENDERECO_API: "{{ agatha_api_uri }}"
     ports:
     - "80:80"

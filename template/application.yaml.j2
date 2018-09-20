@@ -1,0 +1,21 @@
+ecidadao:
+  client-id: {{ agatha_svc_client_id }}
+  client-secret: {{ agatha_svc_client_secret }}
+  pre-established-redirect-uri: http://{{ agatha_svc_uri  }}/gestaoriscos/api/login/openid
+  sistema:
+    dominio: {{ agatha_svc_uri  }}
+    url-pattern-protegido: /**
+    redireciona-login-sucesso: http://{{ agatha_svc_uri  }}
+    redireciona-logout-sucesso: http://{{ agatha_svc_uri  }}
+
+  # URIS dO AMBIENTE DE TESTES
+  access-token-uri: https://testescp-ecidadao.estaleiro.serpro.gov.br/scp/token
+  user-authorization-uri: https://testescp-ecidadao.estaleiro.serpro.gov.br/scp/authorize
+  use-current-uri: false
+  scope: openid
+
+
+
+# URIS DO AMBIENTE DE PRODUÇÃO
+#  access-token-uri: SOLICITAR-MP
+#  user-authorization-uri: SOLICITAR-MP

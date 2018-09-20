@@ -1,20 +1,25 @@
-- name: Instalação dos Pré-Requisitos Agatha
+- name: ensure a list of packages installed
   yum:
-    name: "{{ package }}"
-    state: latest
-    vars:
-       packages:
-        - python-jinja2
-        - pyOpenSSL
-        - python-cryptography
-        - python-lxml
-        - wget
-        - curl
-        - net-tools
-        - bind-utils
-        - yum-utils
-        - device-mapper-persistent-data
-        - lvm2
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - python-jinja2
+    - pyOpenSSL
+    - python-cryptography
+    - python-lxml
+    - wget
+    - curl
+    - net-tools
+    - bind-utils
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+    - python-pip
+
+- name: PIP Docker Install
+  pip:
+    name: "docker"
+
 - name: Remover versoes antigas do Docker
   package:
     name: '{{ item }}'
@@ -45,10 +50,11 @@
     owner: root
     group: root
     mode: 0644
+
 - name: Instalar Docker
   package:
-    name: "{{ docker_package }}"
-    state: "{{ docker_package_state }}"
+    name: '{{ docker_package }}'
+    state: '{{ docker_package_state }}'
   notify: restart docker
 
 - name: Ensure Docker is started and enabled at boot.
